@@ -3,7 +3,9 @@ local skynet = require "skynet"
 local function init()
     skynet.error("----------server start-----------")
     skynet.uniqueservice("debug_console", skynet.getenv("debug_console_port"))
-    skynet.newservice("agentmgrd")
+    local agentmgrd = skynet.uniqueservice("agentmgrd")
+    skynet.call(agentmgrd, "lua", "ListenPort")
+
     skynet.exit()
 end
 

@@ -21,6 +21,8 @@ function Class(className, super)
         cls = {}
         setmetatable(cls, {__index = super})
         cls.super = super
+    else
+        cls = {ctor = function() end}
     end
 
     cls.__cname = className
