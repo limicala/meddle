@@ -1,0 +1,13 @@
+services:
+  meddle:
+    build:
+      context: .
+    image: meddle
+    container_name: meddle
+    ports:
+      - "8000:8000"
+      - "8024:8024"
+    volumes:
+      - "./:/server"
+    stdin_open: true
+    tty: true
