@@ -1,3 +1,9 @@
 [submodule "skynet"]
 	path = skynet
 	url = https://github.com/cloudwu/skynet.git
+[submodule "luaclib/luafilesystem"]
+	path = luaclib/luafilesystem
+	url = https://github.com/keplerproject/luafilesystem.git
+[submodule "luaclib/lua-cjson"]
+	path = luaclib/lua-cjson
+	url = https://github.com/mpx/lua-cjson.git
