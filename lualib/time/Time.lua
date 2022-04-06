@@ -33,4 +33,9 @@ function Time.FormatDate(time)
     return os.date("%Y-%m-%d", time or Time.Now())
 end
 
+function Time.FormatTimeStamp(timeStamp)
+    timeStamp = tonumber(timeStamp)
+    return os.date("%H:%M:%S", math.floor(starttime + timeStamp / 100))
+end
+
 return Time

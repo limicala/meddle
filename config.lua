@@ -12,6 +12,7 @@ end
 
 skynet_dir         = "$SKYNET_DIR/"
 server_dir         = "$ROOT/"
+process_name       = "meddle"
 process_run_path   = "$PROCESS_RUN_PATH/"
 
 start              = "startd"
@@ -27,6 +28,10 @@ logservice  = "snlua"
 harbor      = 0
 lualoader   = skynet_dir .. "lualib/loader.lua"
 preload     = server_dir .. "lualib/preload.lua"
+
+if "$DAEMON" == "true" then
+    daemon = process_run_path .. "run.pid"
+end
 
 lua_path = join_path{
     skynet_dir .. "lualib/?.lua",

@@ -12,6 +12,17 @@ export_process_env(){
     export SHELL_LOG="$PROCESS_RUN_PATH/shell.log"
 }
 
+tailf_process(){
+    export_process_env
+    local log_file="$PROCESS_RUN_PATH"/logs/"$PROJECT_NAME"_$(date +'%Y%m%d').log
+    [ ! -f "$log_file" ] && echo -e "Create log file: $log_file" && touch $log_file
+    echo $log_file
+    tail -30 $log_file
+    echo -e "\n↑↑↑ last 30 lines ↑↑↑"
+    echo -e "\nLog path: $log_file\n"
+    tail -f ---disable-inotify -n 0 $log_file
+}
+
 start_process(){
     export_process_env
     echo "" > "$SHELL_LOG"
@@ -25,8 +36,7 @@ start_process(){
 
     export DAEMON="true"
     export STARTMODE="$2"
-
-    $PROCESS
+    $PROCESS && tailf_process
 }
 
 do_exec(){
@@ -54,6 +64,7 @@ cmd=$1
 shift
 case "$cmd" in
     local_start)           start_process        ;;
+    tailc)                 tailf_process        ;;
     build)                 do_build             ;;
     start)                 do_start             ;;
     stop)                  do_stop              ;;
