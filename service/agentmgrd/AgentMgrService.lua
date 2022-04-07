@@ -1,5 +1,6 @@
-local skynet = require "skynet"
-local socket = require "skynet.socket"
+local skynet      = require "skynet"
+local socket      = require "skynet.socket"
+local Log         = require "Log"
 local ServiceBase = require "service.ServiceBase"
 
 local AGENTD_COUNT = 20
@@ -24,7 +25,7 @@ function AgentMgrService:ListenPort()
 
     local protocol = "ws"
     self.listenSocketId = socket.listen("0.0.0.0", self.listenPort)
-    skynet.error(("Listen websocket port %s protocol:%s"):format(self.listenPort, protocol))
+    Log.Info(("Listen websocket port %s protocol:%s"):format(self.listenPort, protocol))
     socket.start(self.listenSocketId, function(...)
         self:acceptSocket(...)
     end)
@@ -38,7 +39,7 @@ function AgentMgrService:AddGameAgentds(count)
 end
 
 function AgentMgrService:acceptSocket(fd, addr)
-    print(string.format("accept client socket_id: %s addr:%s", fd, addr))
+    Log.Info(string.format("accept client socket_id: %s addr:%s", fd, addr))
     local agentd = self:getAgentdInTurn()
     if not skynet.call(agentd, "lua", "AcceptSocket", fd) then
         return

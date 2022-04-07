@@ -31,11 +31,15 @@ start_process(){
     if [ -n "$process_info" ]
     then
         echo -e "\nThe process is already running:\n$process_info\n"
-        exit
+        # exit
+        ps aux | grep "$PROCESS" | grep -v grep | awk '{print $2}' | xargs kill -9
+        echo -e "\nProgram closed successfully:"
+        echo -e "$process_info\n"
     fi
 
     export DAEMON="true"
     export STARTMODE="$2"
+    # $PROCESS
     $PROCESS && tailf_process
 }
 

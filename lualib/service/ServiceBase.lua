@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local Log = require "Log"
 
 local SERVICE_NAME <const>, SERVICE_PATH <const> = SERVICE_NAME, SERVICE_PATH
 

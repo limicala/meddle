@@ -3,3 +3,4 @@
 package.path = package.path ..";"..string.gsub(SERVICE_PATH, "?", SERVICE_NAME).."?.lua"
 require "std"
 require "extend.table"
+require "extend.string"

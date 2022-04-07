@@ -75,20 +75,21 @@ function LogService:registerProtocol()
         end
     }
 
-    -- skynet.dispatch("log", function (session, address, logInfo)
-    --     local function XpcallRet(ok, ...)
-    --         if not ok then
-    --             if session > 0 then
-    --                 skynet.response()(false)
-    --             end
-    --         else
-    --             if session > 0 then
-    --                 skynet.ret(skynet.pack(...))
-    --             end
-    --         end
-    --     end
-    --     XpcallRet(xpcall(logSvcObj.Logging, print, logSvcObj, address, logInfo))
-    -- end)
+    skynet.dispatch("log", function (session, address, logInfo)
+        local function XpcallRet(ok, ...)
+            if not ok then
+                if session > 0 then
+                    skynet.response()(false)
+                end
+            else
+                if session > 0 then
+                    skynet.ret(skynet.pack(...))
+                end
+            end
+        end
+
+        XpcallRet(xpcall(logSvcObj.Logging, print, logSvcObj, address, logInfo))
+    end)
 end
 
 return LogService
