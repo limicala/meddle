@@ -2,6 +2,7 @@ local skynet      = require "skynet"
 local socket      = require "skynet.socket"
 local Log         = require "Log"
 local ServiceBase = require "service.ServiceBase"
+local Timer       = require "time.Timer"
 
 local AGENTD_COUNT = 20
 
@@ -29,6 +30,7 @@ function AgentMgrService:ListenPort()
     socket.start(self.listenSocketId, function(...)
         self:acceptSocket(...)
     end)
+    Timer.Reg(self, "OnTest", 1, -1)
 end
 
 function AgentMgrService:AddGameAgentds(count)
@@ -54,6 +56,10 @@ function AgentMgrService:getAgentdInTurn()
     local agentd = self.agentds[self.nextAgentIndex]
     self.nextAgentIndex = self.nextAgentIndex + 1
     return agentd
+end
+
+function AgentMgrService:OnTest()
+    Log.Info("timer test")
 end
 
 return AgentMgrService

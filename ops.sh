@@ -74,4 +74,7 @@ case "$cmd" in
     stop)                  do_stop              ;;
     r)                     do_start "console"   ;;
     exec)                  do_exec              ;;
+*)
+    echo " do nothing."
+    exit
 esac
