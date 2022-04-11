@@ -22,7 +22,7 @@ end
 
 function AgentMgrService:ListenPort()
     self.listenPort = skynet.getenv("listen_port")
-    self:AddGameAgentds(AGENTD_COUNT)
+    self:addGameAgentds(AGENTD_COUNT)
 
     local protocol = "ws"
     self.listenSocketId = socket.listen("0.0.0.0", self.listenPort)
@@ -30,10 +30,10 @@ function AgentMgrService:ListenPort()
     socket.start(self.listenSocketId, function(...)
         self:acceptSocket(...)
     end)
-    Timer.Reg(self, "OnTest", 1, -1)
+    Timer.Reg(self, "onTest", 60, 1)
 end
 
-function AgentMgrService:AddGameAgentds(count)
+function AgentMgrService:addGameAgentds(count)
     for _ = 1, count do
         local agentdAddr = skynet.newservice "agentd"
         self.agentds[#self.agentds + 1] = agentdAddr
@@ -58,7 +58,7 @@ function AgentMgrService:getAgentdInTurn()
     return agentd
 end
 
-function AgentMgrService:OnTest()
+function AgentMgrService:onTest()
     Log.Info("timer test")
 end
 

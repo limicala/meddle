@@ -1,4 +1,5 @@
 local lfs = require "lfs"
+local md5 = require "md5"
 
 local string_gsub   = string.gsub
 local string_format = string.format
@@ -11,4 +12,8 @@ function string.get_source(stack_level)
         return "none"
     end
     return string_format("%s:%s", string_gsub(info.source, gsub_currentdir, ""), info.currentline)
+end
+
+function string.md5(str)
+    return md5.sumhexa(str)
 end

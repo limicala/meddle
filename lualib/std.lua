@@ -2,7 +2,6 @@
 local type          = type
 
 STANDARD_CLASS_DEF  = STANDARD_CLASS_DEF  or {}
-STANDARD_ENUM_DEF   = STANDARD_ENUM_DEF or {}
 STANDARD_MODULE_DEF = STANDARD_MODULE_DEF or {}
 
 function Class(className, super)
@@ -32,9 +31,7 @@ function Class(className, super)
         local instance = {}
         setmetatable(instance, cls)
         instance.Class = cls
-        if instance.ctor then
-            instance:ctor(...)
-        end
+        instance:ctor(...)
 
         return instance
     end
@@ -50,14 +47,4 @@ function Module(moduleName)
         STANDARD_MODULE_DEF[moduleName] = {}
     end
     return STANDARD_MODULE_DEF[moduleName]
-end
-
-function ENUM(enumName)
-    if type(enumName) ~= "string" then
-        return
-    end
-    if STANDARD_ENUM_DEF[enumName] == nil then
-        STANDARD_ENUM_DEF[enumName] = {}
-    end
-    return STANDARD_ENUM_DEF[enumName]
 end

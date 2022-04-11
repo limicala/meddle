@@ -1,5 +1,5 @@
 local skynet = require "skynet"
-local Log = require "Log"
+local Reload = require "Reload" -- rsegister reload protocol
 
 local SERVICE_NAME <const>, SERVICE_PATH <const> = SERVICE_NAME, SERVICE_PATH
 
@@ -34,6 +34,11 @@ function ServiceBase:InitService()
             )
         end)
     end
+    skynet.fork(function()
+        if SERVICE_NAME ~= "logd" then
+           skynet.send(skynet.uniqueservice "servicemgrd", "lua", "RegisterService", skynet.self(), SERVICE_NAME)
+        end
+    end)
     skynet.Fork = Fork
 end
 

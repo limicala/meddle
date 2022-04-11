@@ -37,10 +37,15 @@ start_process(){
         echo -e "$process_info\n"
     fi
 
-    export DAEMON="true"
-    export STARTMODE="$2"
-    # $PROCESS
-    $PROCESS && tailf_process
+    export STARTMODE="$1"
+    if [ "$1"x == "debug"x ];
+    then
+        export DAEMON="false"
+        $PROCESS
+    else
+        export DAEMON="true"
+        $PROCESS && tailf_process
+    fi
 }
 
 do_exec(){
@@ -68,6 +73,7 @@ cmd=$1
 shift
 case "$cmd" in
     local_start)           start_process        ;;
+    local_debug)           start_process "debug";;
     tailc)                 tailf_process        ;;
     build)                 do_build             ;;
     start)                 do_start             ;;

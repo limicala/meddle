@@ -12,16 +12,6 @@ local SERVER_LOGGER_LEVEL = LOG_LEVEL_DEFINE[skynet.getenv "log_level" or "debug
 
 local Log = Module("Log")
 
-if not Log.init then
-    Log.init = true
-    skynet.register_protocol {
-        name = "log",
-        id = 101,
-        unpack = skynet.unpack,
-        pack = skynet.pack,
-    }
-end
-
 function Log.SetLogLineHeader(lineHeader)
     SERVICE_LOG_NAME = lineHeader..SERVICE_LOG_NAME
 end
@@ -54,11 +44,11 @@ function Log.send(logFileName, logLevel, logSourceCode, ...)
     if LOG_LEVEL_DEFINE[logLevel] < SERVER_LOGGER_LEVEL then
         return
     end
-    skynet_send(".logger", "log", {a = true, logFileName = logFileName,  logTime = skynet.now(), logLevel = logLevel, logContent = logSourceCode..improved_tostring(...)})
+    skynet_send(".logger", "lua", "Logging", skynet.self(), {a = true, logFileName = logFileName,  logTime = skynet.now(), logLevel = logLevel, logContent = logSourceCode..improved_tostring(...)})
 end
 
 function Log.getSource(stackLevel)
-    return SERVICE_LOG_NAME .. string.get_source(stackLevel or STACK_LEVEL) .." "
+    return SERVICE_LOG_NAME .. string.get_source(stackLevel or STACK_LEVEL) .. " "
 end
 
 function Log.__call(self, ...)

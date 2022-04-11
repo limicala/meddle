@@ -2,16 +2,20 @@ local skynet = require "skynet"
 local lfs = require "lfs"
 local Time = require "time.Time"
 local ServiceBase = require "service.ServiceBase"
-
 local logDir = skynet.getenv("log_dir")
 lfs.mkdir(logDir)
 
+local START_MODE = skynet.getenv("start_mode")
 local LogService = Class("LogService", ServiceBase)
 
 function LogService:ctor()
     LogService.super.ctor(self)
     self.defaultLogFileName = skynet.getenv("process_name")
     self.logFiles = {}
+end
+
+function LogService:RegisterAll()
+    self:RegCmd(self, "Logging")
 end
 
 function LogService:StartService()
@@ -24,6 +28,9 @@ function LogService:Logging(serviceAddr, logInfo)
     local logTime       = Time.FormatTimeStamp(logInfo.logTime or skynet.now())
     local logLevel      = string.upper(logInfo.logLevel)
     local logContent    = logInfo.logContent
+    if START_MODE == "debug" then
+        print(("%s:%s"):format(serviceAddr, logContent))
+    end
     self:writeLoggerFileContent(logFileName, string.format("%s|%06x|%s| %s", logTime, serviceAddr, logLevel, logContent))
 end
 
@@ -74,22 +81,6 @@ function LogService:registerProtocol()
             logSvcObj:Logging(source, {logLevel = "FATAL", logContent = "SIGHUP"})
         end
     }
-
-    skynet.dispatch("log", function (session, address, logInfo)
-        local function XpcallRet(ok, ...)
-            if not ok then
-                if session > 0 then
-                    skynet.response()(false)
-                end
-            else
-                if session > 0 then
-                    skynet.ret(skynet.pack(...))
-                end
-            end
-        end
-
-        XpcallRet(xpcall(logSvcObj.Logging, print, logSvcObj, address, logInfo))
-    end)
 end
 
 return LogService
