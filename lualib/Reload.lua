@@ -12,6 +12,8 @@ local function ReloadPackage(packageName)
     if not package_loaded[packageName] then
         return
     end
+
+    local oldHotfixFunc = hotfix
     local oldPackage = package_loaded[packageName]
     package_loaded[packageName] = nil
 
@@ -22,6 +24,10 @@ local function ReloadPackage(packageName)
         package_loaded[packageName] = oldPackage
     end
     codecache.mode "ON"
+
+    if oldHotfixFunc ~= hotfix and type(hotfix) == "function" then
+        xpcall(hotfix, Log.Err)
+    end
 
     Log.Info("reload file:[%s]", packageName)
 end

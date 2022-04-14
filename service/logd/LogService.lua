@@ -28,9 +28,6 @@ function LogService:Logging(serviceAddr, logInfo)
     local logTime       = Time.FormatTimeStamp(logInfo.logTime or skynet.now())
     local logLevel      = string.upper(logInfo.logLevel)
     local logContent    = logInfo.logContent
-    if START_MODE == "debug" then
-        print(("%s:%s"):format(serviceAddr, logContent))
-    end
     self:writeLoggerFileContent(logFileName, string.format("%s|%06x|%s| %s", logTime, serviceAddr, logLevel, logContent))
 end
 
@@ -40,6 +37,9 @@ function LogService:writeLoggerFileContent(fileName, fileContent)
     if io.type(fileFd) ~= "file" then
         logFileInfo = self:initLoggerFile(fileName)
         fileFd = logFileInfo.fileFd
+    end
+    if START_MODE == "debug" then
+        print(fileContent)
     end
     fileFd:write(fileContent, "\n")
 end

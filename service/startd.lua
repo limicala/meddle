@@ -13,7 +13,7 @@ skynet.start(function ()
     local ok, error = xpcall(init, debug.traceback)
     if not ok then
         -- server start failed
-            print(error)
+        print(error)
         skynet.error(error)
         os.exit()
     end
