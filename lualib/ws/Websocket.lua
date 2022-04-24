@@ -97,12 +97,12 @@ function Websocket:accept_connection(fd, check_origin, check_origin_ok)
     if not header["upgrade"] or header["upgrade"]:lower() ~= "websocket" then
         httpd.write_response(write, 400, "Can Upgrade only to WebSocket.")
         socket_close(fd)
-        return false 
+        return false
     end
     if not header["connection"] or not header["connection"]:lower():find("upgrade", 1,true) then
         httpd.write_response(write, 400, "Connection must be Upgrade.")
         socket_close(fd)
-        return false 
+        return false
     end
     local origin = header["origin"] or header["sec-websocket-origin"]
     if origin and check_origin and not check_origin_ok(origin, header["host"]) then
@@ -155,12 +155,13 @@ function Websocket:send_pong(data)
     self:send_frame(true, 0xA, data)
 end
 
-function Websocket:SendMsg(msg)
+function Websocket:SendMsg(eventCode, data)
     if self.isClosed then
         return
     end
-    local data = protocol.Encode(msg)
-    self:send_text(data)
+    Log.Pretty("SendToClient", eventCode, data)
+    local msg = protocol.Encode(eventCode, data)
+    self:send_text(msg)
 end
 
 function Websocket:recv()
@@ -342,13 +343,13 @@ function Websocket:close(code, reason)
 end
 
 function Websocket:OnMessage(message)
-    local isok, decodeMessage = pcall(protocol.Decode, message)
+    local isok, eventCode, data = pcall(protocol.Decode, message)
 	if not isok then
-        Log.Err("OnMessage Err! %s", decodeMessage)
+        Log.Err("OnMessage Err! %s", eventCode)
 		self:close()
 		return
 	end
-	self.handler.on_message(self, decodeMessage)
+	self.handler.on_message(self, eventCode, data)
 end
 
 local function request(fd, method, host, url, recvheader, header, content)

@@ -2,12 +2,16 @@ local cjson = require "cjson"
 
 local protocol = Module("protocol")
 
-function protocol.Encode(msg)
-    return cjson.encode(msg)
+--[[
+    msg = {code: string, data: string}
+]]
+function protocol.Encode(eventCode, data)
+    return cjson.encode({code = eventCode, data = data})
 end
 
 function protocol.Decode(msg)
-    return cjson.decode(msg)
+    msg = cjson.decode(msg)
+    return msg.code, msg.data
 end
 
 return protocol

@@ -7,6 +7,7 @@ local ServiceBase = Class("ServiceBase")
 
 function ServiceBase:ctor()
     self.service_commands = setmetatable(Module("service_commands"), {__mode = "v"})
+    self.service_c2s = setmetatable(Module("service_c2s"), {__mode = "v"})
     self:RegisterAll()
 end
 

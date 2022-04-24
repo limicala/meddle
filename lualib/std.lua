@@ -3,6 +3,7 @@ local type          = type
 
 STANDARD_CLASS_DEF  = STANDARD_CLASS_DEF  or {}
 STANDARD_MODULE_DEF = STANDARD_MODULE_DEF or {}
+STANDARD_DEFINE_DEF = STANDARD_DEFINE_DEF or {}
 
 function Class(className, super)
     if STANDARD_CLASS_DEF[className] ~= nil then
@@ -47,4 +48,14 @@ function Module(moduleName)
         STANDARD_MODULE_DEF[moduleName] = {}
     end
     return STANDARD_MODULE_DEF[moduleName]
+end
+
+function Define(defineName)
+    if type(defineName) ~= "string" then
+        return
+    end
+    if STANDARD_DEFINE_DEF[defineName] == nil then
+        STANDARD_DEFINE_DEF[defineName] = {}
+    end
+    return STANDARD_DEFINE_DEF[defineName]
 end

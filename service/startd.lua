@@ -1,4 +1,5 @@
 local skynet = require "skynet"
+local Log = require "Log"
 
 local function init()
     skynet.error("----------server start-----------")
@@ -6,6 +7,9 @@ local function init()
     skynet.uniqueservice("servicemgrd")
     local agentmgrd = skynet.uniqueservice("agentmgrd")
     skynet.call(agentmgrd, "lua", "ListenPort")
+
+    skynet.uniqueservice("halld")
+
     skynet.exit()
 end
 

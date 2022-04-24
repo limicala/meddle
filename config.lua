@@ -38,6 +38,7 @@ end
 lua_path = join_path{
     skynet_dir .. "lualib/?.lua",
     skynet_dir .. "lualib/?/init.lua",
+    server_dir .. "share/?.lua",
     server_dir .. "lualib/?.lua",
 }
 luaservice = join_path{
