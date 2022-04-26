@@ -56,7 +56,7 @@ function AgentSession:DefaultDispatch(fd, eventCode, data)
     if func ~= nil then
         self.waitQueue(xpcall, func, Log.Err, self, eventCode, data)
     else
-        self.waitQueue(pcall, skynet.send, "halld", "lua", "DispatchHalldMessage", sessionInfo.agentAddr, sessionInfo.fd, eventCode, data)
+        self.waitQueue(pcall, skynet.send, skynet.uniqueservice "halld", "lua", "DispatchHalldMessage", sessionInfo.agentAddr, sessionInfo.fd, eventCode, data)
     end
 end
 
@@ -79,8 +79,9 @@ function AgentSession:LoopReadSocket()
     end
 end
 
-function AgentSession:CODE_CLIENT_NICKNAME_SET(_, nickName)
-    self.sessionInfo.nickName = nickName
+function AgentSession:CODE_CLIENT_NICKNAME_SET(_, nickname)
+    self.sessionInfo.nickname = nickname
+    self.sessionInfo.roleId = string.md5(nickname) -- todo
     self.waitLoginAndLogoutQueue(self.OnSessionLogin, self)
 end
 

@@ -1,7 +1,6 @@
 local ServiceBase = require "service.ServiceBase"
 local Log = require "Log"
 local Role = require "role.Role"
-local ClientEventCode = require "ClientEventCode"
 
 local RoleMgr = Class("RoleMgr", ServiceBase)
 
@@ -12,7 +11,6 @@ function RoleMgr:ctor()
 end
 
 function RoleMgr:RegisterAll()
-    Log.Info("RoleMgr:Reg")
     self:RegCmd(self, "OnRoleLogin")
     self:RegCmd(self, "DispatchHalldMessage")
 end
@@ -28,7 +26,6 @@ function RoleMgr:OnRoleLogin(sessionInfo)
         roleObj = Role.new(sessionInfo)
         self.fdRoles[fd] = roleObj
     end
-    roleObj:OnPrepare()
     roleObj:OnLogin()
     return true
 end
@@ -42,7 +39,8 @@ function RoleMgr:DispatchHalldMessage(_, fd, eventCode, data)
     if func == nil then
         return
     end
-    return xpcall(func, Log.Err, roleObj, data)
+
+    return xpcall(roleObj[func], Log.Err, roleObj, data)
 end
 
 return RoleMgr

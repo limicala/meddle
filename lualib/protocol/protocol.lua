@@ -6,6 +6,9 @@ local protocol = Module("protocol")
     msg = {code: string, data: string}
 ]]
 function protocol.Encode(eventCode, data)
+    if data ~= nil then
+        data = cjson.encode(data)
+    end
     return cjson.encode({code = eventCode, data = data})
 end
 

@@ -9,6 +9,7 @@ local function init()
     skynet.call(agentmgrd, "lua", "ListenPort")
 
     skynet.uniqueservice("halld")
+    skynet.uniqueservice("roomd")
 
     skynet.exit()
 end
