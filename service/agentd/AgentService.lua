@@ -1,7 +1,4 @@
-local skynet = require "skynet"
-local websocket = require "http.websocket"
 local ServiceBase = require "service.ServiceBase"
-local Log = require "Log"
 local AgentSession = require "AgentSession"
 local ServerEventCode = require "ServerEventCode"
 
@@ -18,6 +15,7 @@ end
 
 function AgentService:RegisterAll()
     self:RegCmd(self, "AcceptSocket")
+    self:RegCmd(self, "UpdateRoomAddrToSession")
 end
 
 function AgentService:AcceptSocket(fd)
@@ -27,6 +25,18 @@ function AgentService:AcceptSocket(fd)
     end
     self.sessions[fd] = session
     return true
+end
+
+function AgentService:GetSessionByFd(fd)
+    return self.sessions[fd]
+end
+
+function AgentService:UpdateRoomAddrToSession(fd, roomId, roomdAddr)
+    local sessionObj = self.sessions[fd]
+    if sessionObj == nil then
+        return
+    end
+    sessionObj:UpdateRoomAddrToSession(roomId, roomdAddr)
 end
 
 return AgentService

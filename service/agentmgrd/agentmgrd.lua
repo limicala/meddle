@@ -1,3 +1,3 @@
 local AgentMgrService  = require "AgentMgrService"
-agentMgrSvc = AgentMgrService.new()
-agentMgrSvc:StartService()
+agentMgrServiceObj = AgentMgrService.new()
+agentMgrServiceObj:StartService()

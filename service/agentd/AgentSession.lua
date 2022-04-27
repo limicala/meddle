@@ -10,7 +10,7 @@ local handler = {}
 
 local function doDispatch(wsObj, eventCode, data)
     local fd = wsObj.fd
-    local agentObj = agentSvc.sessions[fd]
+    local agentObj = agentServiceObj:GetSessionByFd(fd)
     agentObj[agentObj.dispatchFunc](agentObj, fd, eventCode, data)
 end
 
@@ -87,6 +87,14 @@ end
 
 function AgentSession:OnSessionLogin()
     skynet.send(skynet.uniqueservice "halld", "lua", "OnRoleLogin", self.sessionInfo)
+end
+
+function AgentSession:UpdateRoomAddrToSession(roomId, roomdAddr)
+    if self.sessionInfo == nil then
+        return
+    end
+    self.sessionInfo.roomId = roomId
+    self.sessionInfo.roomdAddr = roomdAddr
 end
 
 return AgentSession

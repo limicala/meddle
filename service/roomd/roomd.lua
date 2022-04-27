@@ -1,3 +1,3 @@
 local RoomService  = require "RoomService"
-svcObj = RoomService.new()
-svcObj:StartService()
+roomServiceObj = RoomService.new()
+roomServiceObj:StartService()

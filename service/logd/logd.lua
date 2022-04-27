@@ -1,3 +1,3 @@
 local LogService = require "LogService"
-svcObj = LogService.new()
-svcObj:StartService()
+logServiceObj = LogService.new()
+logServiceObj:StartService()

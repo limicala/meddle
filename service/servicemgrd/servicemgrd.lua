@@ -1,3 +1,3 @@
 local ServiceMgr = require "ServiceMgr"
-svcObj = ServiceMgr.new()
-svcObj:StartService()
+serviceMgrObj = ServiceMgr.new()
+serviceMgrObj:StartService()

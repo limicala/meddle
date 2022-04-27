@@ -1,3 +1,3 @@
 local HallService  = require "HallService"
-svcObj = HallService.new()
-svcObj:StartService()
+hallServiceObj = HallService.new()
+hallServiceObj:StartService()

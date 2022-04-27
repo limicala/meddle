@@ -22,8 +22,8 @@ function Timer.UnReg(callbackObj, callbackFuncName)
     end
 end
 
-function Timer.UnRegByTimeId(timer_id)
-    return timerMgr:UnRegByTimeId(timer_id)
+function Timer.UnRegByTimeId(timerId)
+    return timerMgr:UnRegByTimeId(timerId)
 end
 
 return Timer
