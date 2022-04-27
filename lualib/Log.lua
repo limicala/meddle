@@ -5,7 +5,7 @@ local improved_tostring = prettyprint.improved_tostring
 
 local skynet_send       = skynet.send
 local SERVICE_LOG_NAME  = "["..SERVICE_NAME.."] "
-local STACK_LEVEL       = 5
+local STACK_LEVEL       = 4
 local DEFAULT_LOG_NAME  = skynet.getenv("process_name")
 local LOG_LEVEL_DEFINE = {debug = 1, info  = 2, error = 3}
 local SERVER_LOGGER_LEVEL = LOG_LEVEL_DEFINE[skynet.getenv "log_level" or "debug"] or 1

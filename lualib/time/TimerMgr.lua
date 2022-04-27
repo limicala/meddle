@@ -1,6 +1,7 @@
 local Queue = require "container.Queue"
 local Time = require "time.Time"
 local skynet = require "skynet"
+local Log = require "Log"
 
 local table_weakReference = table.weakReference
 
@@ -122,7 +123,7 @@ function TimerMgr:onSchedule(timerId)
     if not callbackObj then
         return
     end
-    xpcall(callbackObj[callbackFuncName], skynet.error, callbackObj, timerId)
+    xpcall(callbackObj[callbackFuncName], Log.Err, callbackObj, timerId)
     local cycle = timerInfo.cycle
     if cycle == 1 then
         self:UnRegTimerId(timerId)

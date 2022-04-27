@@ -7,7 +7,7 @@ local debug_getinfo = debug.getinfo
 local gsub_currentdir = "^@"..lfs.currentdir().."/"
 
 function string.get_source(stack_level)
-    local info = debug_getinfo(stack_level or 4, "Sl")
+    local info = debug_getinfo(stack_level, "Sl")
     if not info then
         return "none"
     end

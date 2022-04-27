@@ -15,11 +15,11 @@ local function init()
 end
 
 skynet.start(function ()
-    local ok, error = xpcall(init, debug.traceback)
+    local ok, error = pcall(init)
     if not ok then
         -- server start failed
-        print(error)
-        skynet.error(error)
+        Log.Err(error)
+        skynet.sleep(200)
         os.exit()
     end
 end)
